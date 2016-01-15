@@ -1,0 +1,40 @@
+{
+    "name": "fsv/typography",
+    "minimum-stability": "dev",
+    "repositories": [
+        {
+            "type": "package",
+            "package": {
+                "name": "emuravjev/mdash",
+                "version": "3.5",
+                "dist": {
+                    "url": "http://mdash.ru/download/emt3.5-php.zip",
+                    "type": "zip"
+                },
+                "source": {
+                    "url": "https://github.com/emuravjev/mdash",
+                    "type": "git",
+                    "reference": "master"
+                },
+                "autoload": {
+                    "classmap": ["EMT.php"]
+                }
+            }
+        }
+    ],
+    "require": {
+        "symfony/symfony": "~2.7",
+        "emuravjev/mdash": "3.5"
+    },
+    "autoload": {
+        "psr-4": {
+            "Fsv\\TypographyBundle\\": ""
+        }
+    },
+    "authors": [
+        {
+            "name": "Sergey Fedotov",
+            "email": "sergey89@gmail.com"
+        }
+    ]
+}
