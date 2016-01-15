@@ -1,5 +1,6 @@
 .idea/
-vendor/
+vendor/*
+!vendor/emuravjev/
 composer.lock
 composer.phar
 phpunit.xml
