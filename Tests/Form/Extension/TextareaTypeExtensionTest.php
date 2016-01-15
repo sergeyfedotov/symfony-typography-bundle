@@ -10,7 +10,7 @@ class TextareaTypeExtensionTest extends TypeTestCase
 {
     public function testSubmitWithTypography()
     {
-        $form = $this->factory->create('Symfony\Component\Form\Extension\Core\Type\TextareaType', null, array(
+        $form = $this->factory->create('textarea', null, array(
             'typography' => true
         ));
         $form->submit('Типограф - это здорово!');
@@ -20,7 +20,7 @@ class TextareaTypeExtensionTest extends TypeTestCase
 
     public function testSubmitWithoutTypography()
     {
-        $form = $this->factory->create('Symfony\Component\Form\Extension\Core\Type\TextareaType', null);
+        $form = $this->factory->create('textarea');
         $form->submit('Типограф - это здорово!');
 
         $this->assertEquals('Типограф - это здорово!', $form->getData());
@@ -32,7 +32,7 @@ class TextareaTypeExtensionTest extends TypeTestCase
             new PreloadedExtension(
                 array(),
                 array(
-                    'Symfony\Component\Form\Extension\Core\Type\TextareaType' => array(
+                    'textarea' => array(
                         new TextareaTypeExtension(new MdashTypograph(array('Text.paragraphs' => 'off')))
                     )
                 )
