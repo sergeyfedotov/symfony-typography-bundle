@@ -2,7 +2,6 @@
 namespace Fsv\TypographyBundle\Tests\Form\Extension;
 
 use Fsv\TypographyBundle\Form\Extension\TextareaTypeExtension;
-use Fsv\TypographyBundle\Typograph\MdashTypograph;
 use Symfony\Component\Form\PreloadedExtension;
 use Symfony\Component\Form\Test\TypeTestCase;
 
@@ -28,13 +27,19 @@ class TextareaTypeExtensionTest extends TypeTestCase
 
     protected function getExtensions()
     {
+        $typograph = $this->getMock('Fsv\TypographyBundle\Typograph\TypographInterface');
+        $typograph
+            ->expects($this->any())
+            ->method('apply')
+            ->with('Типограф - это здорово!')
+            ->will($this->returnValue('Типограф&nbsp;&mdash; это здорово!'))
+        ;
+
         return array(
             new PreloadedExtension(
                 array(),
                 array(
-                    'textarea' => array(
-                        new TextareaTypeExtension(new MdashTypograph(array('Text.paragraphs' => 'off')))
-                    )
+                    'textarea' => array(new TextareaTypeExtension($typograph))
                 )
             )
         );
