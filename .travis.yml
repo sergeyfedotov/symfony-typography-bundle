@@ -18,5 +18,5 @@ before_install:
     - composer self-update
 
 install:
-    - composer require symfony/symfony:${SYMFONY_VERSION}
+    - composer require symfony/symfony:${SYMFONY_VERSION} --no-update
     - composer update --prefer-dist --no-interaction
