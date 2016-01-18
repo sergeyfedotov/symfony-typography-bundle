@@ -13,11 +13,12 @@ class Configuration implements ConfigurationInterface
     {
         $treeBuilder = new TreeBuilder();
 
-        $treeBuilder->root('fsv_typography')
+        $rootNode = $treeBuilder->root('fsv_typography');
+        $rootNode
             ->children()
+                ->booleanNode('enable_form_extension')->defaultTrue()->end()
                 ->arrayNode('typograph_options')
-                    ->prototype('scalar')
-                    ->end()
+                    ->prototype('scalar')->end()
                 ->end()
             ->end()
         ;

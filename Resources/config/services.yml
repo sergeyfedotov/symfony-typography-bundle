@@ -1,14 +1,9 @@
 parameters:
     fsv_typography.typograph.class: Fsv\TypographyBundle\Typograph\MdashTypograph
+    fsv_typography.textarea_type_extension.class: Fsv\TypographyBundle\Form\Extension\TextareaTypeExtension
 
 services:
     fsv_typography.typograph:
         class: "%fsv_typography.typograph.class%"
         calls:
             - [setup, ["%fsv_typography.typograph.options%"]]
-
-    fsv_typography.textarea_type_extension:
-        class: Fsv\TypographyBundle\Form\Extension\TextareaTypeExtension
-        arguments: ["@fsv_typography.typograph"]
-        tags:
-            - { name: form.type_extension, extended_type: Symfony\Component\Form\Extension\Core\Type\TextareaType, alias: textarea }
