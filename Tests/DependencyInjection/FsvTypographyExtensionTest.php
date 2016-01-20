@@ -7,6 +7,29 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 class FsvTypographyExtensionTest extends \PHPUnit_Framework_TestCase
 {
+    public function testConfigureTypograph()
+    {
+        $container = $this->getRawContainer();
+        $container->loadFromExtension('fsv_typography', array(
+            'typographs' => array(
+                'default' => array(),
+                'another_one' => array()
+            )
+        ));
+        $container->compile();
+
+        $this->assertTrue($container->hasDefinition('fsv_typography.typograph.default'));
+        $this->assertTrue($container->hasDefinition('fsv_typography.typograph.another_one'));
+        $this->assertTrue(is_subclass_of(
+            $container->getDefinition('fsv_typography.typograph.default')->getClass(),
+            'Fsv\TypographyBundle\Typograph\TypographInterface'
+        ));
+        $this->assertTrue(is_subclass_of(
+            $container->getDefinition('fsv_typography.typograph.another_one')->getClass(),
+            'Fsv\TypographyBundle\Typograph\TypographInterface'
+        ));
+    }
+
     public function testEnableFormExtension()
     {
         $container = $this->getRawContainer();
@@ -16,6 +39,11 @@ class FsvTypographyExtensionTest extends \PHPUnit_Framework_TestCase
         $container->compile();
 
         $this->assertTrue($container->hasDefinition('fsv_typography.textarea_type_extension'));
+        $this->assertTrue(is_a(
+            $container->getDefinition('fsv_typography.textarea_type_extension')->getClass(),
+            'Fsv\TypographyBundle\Form\Extension\TextareaTypeExtension',
+            true
+        ));
     }
 
     public function testDisableFormExtension()
@@ -27,22 +55,6 @@ class FsvTypographyExtensionTest extends \PHPUnit_Framework_TestCase
         $container->compile();
 
         $this->assertFalse($container->hasDefinition('fsv_typography.textarea_type_extension'));
-    }
-
-    public function testLoadTypographOptions()
-    {
-        $options = array(
-            'option1' => 'value1',
-            'option2' => 'value2'
-        );
-
-        $container = $this->getRawContainer();
-        $container->loadFromExtension('fsv_typography', array(
-            'typograph_options' => $options
-        ));
-        $container->compile();
-
-        $this->assertEquals($options, $container->getParameter('fsv_typography.typograph.options'));
     }
 
     private function getRawContainer()

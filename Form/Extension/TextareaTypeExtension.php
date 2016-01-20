@@ -2,7 +2,7 @@
 namespace Fsv\TypographyBundle\Form\Extension;
 
 use Fsv\TypographyBundle\Form\DataTransformer\TypographyTransformer;
-use Fsv\TypographyBundle\Typograph\TypographInterface;
+use Fsv\TypographyBundle\Typograph\TypographMapInterface;
 use Symfony\Component\Form\AbstractTypeExtension;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -10,16 +10,16 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 class TextareaTypeExtension extends AbstractTypeExtension
 {
     /**
-     * @var TypographInterface
+     * @var TypographMapInterface
      */
-    private $typograph;
+    private $typographMap;
 
     /**
-     * @param TypographInterface $typograph
+     * @param TypographMapInterface $typographMap
      */
-    public function __construct(TypographInterface $typograph)
+    public function __construct(TypographMapInterface $typographMap)
     {
-        $this->typograph = $typograph;
+        $this->typographMap = $typographMap;
     }
 
     /**
@@ -37,7 +37,9 @@ class TextareaTypeExtension extends AbstractTypeExtension
     {
         if ($options['typography']) {
             $builder->addModelTransformer(
-                new TypographyTransformer($this->typograph)
+                new TypographyTransformer(
+                    $this->typographMap->getTypograph($options['typography'])
+                )
             );
         }
     }

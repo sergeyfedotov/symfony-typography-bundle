@@ -1,9 +1,16 @@
 parameters:
+    fsv_typography.typograph_map.class: Fsv\TypographyBundle\Typograph\TypographMap
     fsv_typography.typograph.class: Fsv\TypographyBundle\Typograph\MdashTypograph
     fsv_typography.textarea_type_extension.class: Fsv\TypographyBundle\Form\Extension\TextareaTypeExtension
 
 services:
-    fsv_typography.typograph:
-        class: "%fsv_typography.typograph.class%"
-        calls:
-            - [setup, ["%fsv_typography.typograph.options%"]]
+    fsv_typography.typograph_map:
+        class: "%fsv_typography.typograph_map.class%"
+        arguments:
+            - { type: collection }
+
+    fsv_typography.textarea_type_extension:
+        class: "%fsv_typography.textarea_type_extension.class%"
+        arguments: ["@fsv_typography.typograph_map"]
+        tags:
+            - { name: form.type_extension, extended_type: Symfony\Component\Form\Extension\Core\Type\TextareaType, alias: textarea }

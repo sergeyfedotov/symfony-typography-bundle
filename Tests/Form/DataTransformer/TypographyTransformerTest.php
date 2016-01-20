@@ -13,7 +13,7 @@ class TypographyTransformerTest extends TypeTestCase
 
         $typograph = $this->getMock('Fsv\TypographyBundle\Typograph\TypographInterface');
         $typograph
-            ->expects($this->any())
+            ->expects($this->once())
             ->method('apply')
             ->with($input)
             ->will($this->returnValue($output))

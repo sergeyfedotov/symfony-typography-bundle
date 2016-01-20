@@ -16,17 +16,6 @@ class MdashTypograph implements TypographInterface
     public function __construct(array $options = array())
     {
         $this->typograph = new EMTypograph();
-
-        if ($options) {
-            $this->setup($options);
-        }
-    }
-
-    /**
-     * @param array $options
-     */
-    public function setup(array $options)
-    {
         $this->typograph->setup($options);
     }
 
