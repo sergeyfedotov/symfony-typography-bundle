@@ -18,19 +18,35 @@ class FsvTypographyExtension extends Extension
         $configuration = new Configuration();
         $config = $this->processConfiguration($configuration, $configs);
 
-        $container->setParameter('fsv_typography.typograph.options', $config['typograph_options']);
+        $this->createTypographs($config['typographs'], $container);
 
-        if ($config['enable_form_extension']) {
-            $extensionDefinition = new Definition('%fsv_typography.textarea_type_extension.class%');
-            $extensionDefinition
-                ->addArgument(new Reference('fsv_typography.typograph'))
-                ->addTag('form.type_extension', array(
-                    'extended_type' => 'Symfony\Component\Form\Extension\Core\Type\TextareaType',
-                    'alias' => 'textarea'
-                ))
-            ;
-
-            $container->setDefinition('fsv_typography.textarea_type_extension', $extensionDefinition);
+        if (!$config['enable_form_extension']) {
+            $container->removeDefinition('fsv_typography.textarea_type_extension');
         }
+    }
+
+    private function createTypographs($typographs, ContainerBuilder $container)
+    {
+        $map = array();
+        foreach ($typographs as $name => $options) {
+            $map[$name] = $this->createTypograph($name, $options, $container);
+        }
+
+        $definition = $container->getDefinition('fsv_typography.typograph_map');
+        $definition->replaceArgument(0, $map);
+    }
+
+    private function createTypograph($name, $options, ContainerBuilder $container)
+    {
+        $definition = new Definition('%fsv_typography.typograph.class%');
+        $definition
+            ->setLazy(true)
+            ->addArgument($options)
+        ;
+
+        $id = sprintf('fsv_typography.typograph.%s', $name);
+        $container->setDefinition($id, $definition);
+
+        return new Reference($id);
     }
 }

@@ -10,7 +10,7 @@ class TextareaTypeExtensionTest extends TypeTestCase
     public function testSubmitWithTypography()
     {
         $form = $this->factory->create('textarea', null, array(
-            'typography' => true
+            'typography' => 'default'
         ));
         $form->submit('Типограф - это здорово!');
 
@@ -35,11 +35,21 @@ class TextareaTypeExtensionTest extends TypeTestCase
             ->will($this->returnValue('Типограф&nbsp;&mdash; это здорово!'))
         ;
 
+        $typographMap = $this->getMock('Fsv\TypographyBundle\Typograph\TypographMapInterface');
+        $typographMap
+            ->expects($this->any())
+            ->method('getTypograph')
+            ->with('default')
+            ->will($this->returnCallback(function () use ($typograph) {
+                return $typograph;
+            }))
+        ;
+
         return array(
             new PreloadedExtension(
                 array(),
                 array(
-                    'textarea' => array(new TextareaTypeExtension($typograph))
+                    'textarea' => array(new TextareaTypeExtension($typographMap))
                 )
             )
         );
