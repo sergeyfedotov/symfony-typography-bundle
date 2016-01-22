@@ -40,7 +40,7 @@ class TextareaTypeExtensionTest extends TypeTestCase
             ->expects($this->any())
             ->method('getTypograph')
             ->with('default')
-            ->will($this->returnCallback(function () use ($typograph) {
+            ->will($this->returnCallback(function() use ($typograph) {
                 return $typograph;
             }))
         ;
