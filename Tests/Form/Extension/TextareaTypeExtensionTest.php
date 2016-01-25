@@ -2,14 +2,28 @@
 namespace Fsv\TypographyBundle\Tests\Form\Extension;
 
 use Fsv\TypographyBundle\Form\Extension\TextareaTypeExtension;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
+use Symfony\Component\Form\FormTypeInterface;
 use Symfony\Component\Form\PreloadedExtension;
 use Symfony\Component\Form\Test\TypeTestCase;
 
 class TextareaTypeExtensionTest extends TypeTestCase
 {
+    private static $textareaType;
+
+    public static function setUpBeforeClass()
+    {
+        parent::setUpBeforeClass();
+
+        self::$textareaType = method_exists(FormTypeInterface::class, 'getBlockPrefix')
+            ? TextareaType::class
+            : 'textarea'
+            ;
+    }
+
     public function testSubmitWithTypography()
     {
-        $form = $this->factory->create('textarea', null, array(
+        $form = $this->factory->create(self::$textareaType, null, array(
             'typography' => 'default'
         ));
         $form->submit('Типограф - это здорово!');
@@ -19,7 +33,7 @@ class TextareaTypeExtensionTest extends TypeTestCase
 
     public function testSubmitWithoutTypography()
     {
-        $form = $this->factory->create('textarea');
+        $form = $this->factory->create(self::$textareaType);
         $form->submit('Типограф - это здорово!');
 
         $this->assertEquals('Типограф - это здорово!', $form->getData());
@@ -40,7 +54,7 @@ class TextareaTypeExtensionTest extends TypeTestCase
             ->expects($this->any())
             ->method('getTypograph')
             ->with('default')
-            ->will($this->returnCallback(function() use ($typograph) {
+            ->will($this->returnCallback(function () use ($typograph) {
                 return $typograph;
             }))
         ;
@@ -49,7 +63,7 @@ class TextareaTypeExtensionTest extends TypeTestCase
             new PreloadedExtension(
                 array(),
                 array(
-                    'textarea' => array(new TextareaTypeExtension($typographMap))
+                    self::$textareaType => array(new TextareaTypeExtension($typographMap))
                 )
             )
         );

@@ -4,7 +4,9 @@ namespace Fsv\TypographyBundle\Form\Extension;
 use Fsv\TypographyBundle\Form\DataTransformer\TypographyTransformer;
 use Fsv\TypographyBundle\Typograph\TypographMapInterface;
 use Symfony\Component\Form\AbstractTypeExtension;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\FormTypeInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class TextareaTypeExtension extends AbstractTypeExtension
@@ -27,7 +29,10 @@ class TextareaTypeExtension extends AbstractTypeExtension
      */
     public function getExtendedType()
     {
-        return 'textarea';
+        return method_exists(FormTypeInterface::class, 'getBlockPrefix')
+            ? TextareaType::class
+            : 'textarea'
+            ;
     }
 
     /**
