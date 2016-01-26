@@ -1,7 +1,7 @@
 <?php
 namespace Fsv\TypographyBundle\Form\Extension;
 
-use Fsv\TypographyBundle\Form\DataTransformer\TypographyTransformer;
+use Fsv\TypographyBundle\Form\EventListener\TypographyListener;
 use Fsv\TypographyBundle\Typograph\TypographMapInterface;
 use Symfony\Component\Form\AbstractTypeExtension;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
@@ -41,8 +41,8 @@ class TextareaTypeExtension extends AbstractTypeExtension
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         if ($options['typography']) {
-            $builder->addModelTransformer(
-                new TypographyTransformer(
+            $builder->addEventSubscriber(
+                new TypographyListener(
                     $this->typographMap->getTypograph($options['typography'])
                 )
             );
