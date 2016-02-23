@@ -7,7 +7,9 @@
 
 Установка
 ---------------
-```$ composer require fsv/typography-bundle```
+```
+$ composer require fsv/typography-bundle
+```
 
 ```php
 // app/AppKernel.php
@@ -21,7 +23,13 @@ public function registerBundles()
 }
 ```
 
-Использование
+Для отложенной инициализации типографа нужно установить дополнительный пакет:
+
+```
+$ composer require ocramius/proxy-manager:^1.0
+```
+
+Настройка
 ---------------
 ```yaml
 # app/config/config.yml
@@ -38,14 +46,60 @@ fsv_typography:
             # ...
 ```
 
+Можно создать любое количество конфигураций:
+
+```yaml
+fsv_typography:
+    typographs:
+        article:
+            # ...
+        news:
+            # ...
+```
+
+Можно отключить расширение для формы:
+
+```yaml
+fsv_typography:
+    enable_form_extension: false
+    # ...
+```
+
+Использование
+---------------
+### Типографирование в форме
+
 ```php
-# AppBundle\Form\Type\CustomFormType.php
+// AppBundle\Form\Type\ExampleFormType.php
 
 public function buildForm(FormBuilderInterface $builder, array $options)
 {
     $builder->add('content', TextareaType::class, [
         'typography' => 'default'
     ]);
-    # ...
+    // ...
+}
+```
+
+В качестве значения опции `typography` передаётся название конфигурации.
+
+### Типографирование через сервис
+
+Для каждой конфигурации создаётся сервис:
+```
+fsv_typography.typograph.default
+fsv_typography.typograph.news
+fsv_typography.typograph.article
+...
+```
+
+```php
+// AppBundle/Controller/ExampleController.php
+
+public function exampleAction()
+{
+    // ...
+    $content = $this->get('fsv_typography.typograph.default')->apply($rawContent);
+    // ...
 }
 ```
