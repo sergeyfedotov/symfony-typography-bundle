@@ -18,6 +18,7 @@ class Configuration implements ConfigurationInterface
             ->children()
                 ->booleanNode('enable_form_extension')->defaultTrue()->end()
                 ->arrayNode('typographs')
+                    ->isRequired()
                     ->useAttributeAsKey('name')
                     ->prototype('variable')->end()
                 ->end()

@@ -40,10 +40,12 @@ class TextareaTypeExtension extends AbstractTypeExtension
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        if ($options['typography']) {
+        if (false !== $options['typography']) {
             $builder->addEventSubscriber(
                 new TypographyListener(
-                    $this->typographMap->getTypograph($options['typography'])
+                    $this->typographMap->getTypograph(
+                        true === $options['typography'] ? 'default' : $options['typography']
+                    )
                 )
             );
         }

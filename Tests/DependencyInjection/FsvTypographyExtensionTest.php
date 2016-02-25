@@ -10,12 +10,12 @@ class FsvTypographyExtensionTest extends \PHPUnit_Framework_TestCase
     public function testConfigureTypograph()
     {
         $container = $this->getRawContainer();
-        $container->loadFromExtension('fsv_typography', array(
-            'typographs' => array(
-                'default' => array(),
-                'another_one' => array()
-            )
-        ));
+        $container->loadFromExtension('fsv_typography', [
+            'typographs' => [
+                'default' => [],
+                'another_one' => []
+            ]
+        ]);
         $container->compile();
 
         $this->assertTrue($container->hasDefinition('fsv_typography.typograph.default'));
@@ -30,12 +30,30 @@ class FsvTypographyExtensionTest extends \PHPUnit_Framework_TestCase
         ));
     }
 
+    public function testDefaultTypograph()
+    {
+        $container = $this->getRawContainer();
+        $container->loadFromExtension('fsv_typography', [
+            'typographs' => [
+                'non_default' => []
+            ]
+        ]);
+        $container->compile();
+
+        $this->assertTrue($container->hasDefinition('fsv_typography.typograph.non_default'));
+        $this->assertTrue($container->hasAlias('fsv_typography.typograph.default'));
+        $this->assertTrue($container->hasAlias('fsv_typography.typograph'));
+        $this->assertEquals((string)$container->getAlias('fsv_typography.typograph.default'), 'fsv_typography.typograph.non_default');
+        $this->assertEquals((string)$container->getAlias('fsv_typography.typograph'), 'fsv_typography.typograph.non_default');
+    }
+
     public function testEnableFormExtension()
     {
         $container = $this->getRawContainer();
-        $container->loadFromExtension('fsv_typography', array(
-            'enable_form_extension' => true
-        ));
+        $container->loadFromExtension('fsv_typography', [
+            'enable_form_extension' => true,
+            'typographs' => ['default' => []]
+        ]);
         $container->compile();
 
         $this->assertTrue($container->hasDefinition('fsv_typography.textarea_type_extension'));
@@ -49,9 +67,10 @@ class FsvTypographyExtensionTest extends \PHPUnit_Framework_TestCase
     public function testDisableFormExtension()
     {
         $container = $this->getRawContainer();
-        $container->loadFromExtension('fsv_typography', array(
-            'enable_form_extension' => false
-        ));
+        $container->loadFromExtension('fsv_typography', [
+            'enable_form_extension' => false,
+            'typographs' => ['default' => []]
+        ]);
         $container->compile();
 
         $this->assertFalse($container->hasDefinition('fsv_typography.textarea_type_extension'));

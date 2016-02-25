@@ -33,10 +33,30 @@ class TextareaTypeExtensionTest extends TypeTestCase
 
     public function testSubmitWithoutTypography()
     {
+        $form = $this->factory->create(self::$textareaType, null, [
+            'typography' => false
+        ]);
+        $form->submit('Типограф - это здорово!');
+
+        $this->assertEquals('Типограф - это здорово!', $form->getData());
+    }
+
+    public function testSubmitWithoutTypographyByDefault()
+    {
         $form = $this->factory->create(self::$textareaType);
         $form->submit('Типограф - это здорово!');
 
         $this->assertEquals('Типограф - это здорово!', $form->getData());
+    }
+
+    public function testSubmitWithDefaultTypograph()
+    {
+        $form = $this->factory->create(self::$textareaType, null, array(
+            'typography' => true
+        ));
+        $form->submit('Типограф - это здорово!');
+
+        $this->assertEquals('Типограф&nbsp;&mdash; это здорово!', $form->getData());
     }
 
     protected function getExtensions()

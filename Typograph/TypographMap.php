@@ -14,6 +14,10 @@ class TypographMap implements TypographMapInterface
      */
     public function __construct(array $map)
     {
+        if (!$map) {
+            throw new \InvalidArgumentException('At least one typograph configuration should be available');
+        }
+
         $this->map = $map;
     }
 

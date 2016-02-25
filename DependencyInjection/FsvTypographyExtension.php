@@ -32,6 +32,13 @@ class FsvTypographyExtension extends Extension
             $map[$name] = $this->createTypograph($name, $options, $container);
         }
 
+        if ($map && !isset($map['default'])) {
+            $map['default'] = reset($map);
+            $container->setAlias('fsv_typography.typograph.default', (string)$map['default']);
+        }
+
+        $container->setAlias('fsv_typography.typograph', 'fsv_typography.typograph.default');
+
         $definition = $container->getDefinition('fsv_typography.typograph_map');
         $definition->replaceArgument(0, $map);
     }
