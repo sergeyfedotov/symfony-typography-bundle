@@ -15,12 +15,12 @@
     ],
     "require": {
         "php": ">=5.5.9",
-        "symfony/symfony": "^2.7|^3.0"
+        "symfony/symfony": "^2.7|^3.0",
+        "michelf/php-smartypants": "1.6.x-dev"
     },
     "require-dev": {
         "phpunit/phpunit": "~4.8",
         "emuravjev/mdash": "3.5",
-        "michelf/php-smartypants": "^1.6@beta",
         "squizlabs/php_codesniffer": "^2.6"
     },
     "autoload": {
@@ -28,9 +28,7 @@
             "Fsv\\TypographyBundle\\": ""
         },
         "classmap": [
-            "./vendor/emuravjev/mdash/EMT.php",
-            "./vendor/michelf/php-smartypants/Michelf/SmartyPants.php",
-            "./vendor/michelf/php-smartypants/Michelf/SmartyPantsTypographer.php"
+            "./vendor/emuravjev/mdash/EMT.php"
         ]
     },
     "minimum-stability": "dev",
