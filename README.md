@@ -1,11 +1,9 @@
-Типограф для Symfony 2
+Symfony Typography Bundle
 ===============
 
 [![Build Status](https://travis-ci.org/sergeyfedotov/symfony-typography-bundle.svg?branch=master)](https://travis-ci.org/sergeyfedotov/symfony-typography-bundle)
 
-Для обработки текста используется [типограф Муравьёва](https://github.com/emuravjev/mdash).
-
-Установка
+Installation
 ---------------
 ```
 $ composer require fsv/typography-bundle
@@ -23,52 +21,38 @@ public function registerBundles()
 }
 ```
 
-Для отложенной инициализации типографа нужно установить дополнительный пакет:
-
+For lazy typographers initialization:
 ```
 $ composer require ocramius/proxy-manager:^1.0
 ```
 
-Настройка
+Configuration
 ---------------
 ```yaml
 # app/config/config.yml
 
 fsv_typography:
-    typographs:
+    typographers:
         default:
-            Nobr.spaces_nobr_in_surname_abbr: off
-            Text.paragraphs: off
-            Text.auto_links: off
-            Text.email: off
-            Text.breakline: off
-            Text.no_repeat_words: off
-            # ...
+            mdash:
+                options:
+                    Text.paragraphs: off
+        another:
+            smartypants:
+                attr: 1
+        service:
+            id: my_service_id
+# ...
 ```
 
-Можно создать любое количество конфигураций:
-
-```yaml
-fsv_typography:
-    typographs:
-        article:
-            # ...
-        news:
-            # ...
-```
-
-Можно отключить расширение для формы:
-
+Disable form extension:
 ```yaml
 fsv_typography:
     enable_form_extension: false
-    # ...
 ```
 
-Использование
+Usage
 ---------------
-### Типографирование в форме
-
 ```php
 // AppBundle\Form\Type\ExampleFormType.php
 
@@ -81,25 +65,14 @@ public function buildForm(FormBuilderInterface $builder, array $options)
 }
 ```
 
-В качестве значения опции `typography` передаётся название конфигурации.
-
-### Типографирование через сервис
-
-Для каждой конфигурации создаётся сервис:
-```
-fsv_typography.typograph.default
-fsv_typography.typograph.news
-fsv_typography.typograph.article
-...
-```
-
 ```php
 // AppBundle/Controller/ExampleController.php
 
 public function exampleAction()
 {
     // ...
-    $content = $this->get('fsv_typography.typograph.default')->apply($rawContent);
+    $content = $this->get('fsv_typography.typographer_map')->getTypographer('default')->typography($rawContent);
+    $content = $this->get('fsv_typography.typographer_map.default')->typography($rawContent);
     // ...
 }
 ```
