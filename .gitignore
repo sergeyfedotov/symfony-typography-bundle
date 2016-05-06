@@ -1,7 +1,6 @@
-.idea/
 vendor/*
 !vendor/emuravjev/
+!vendor/michelf/
 composer.lock
 composer.phar
 phpunit.xml
-.DS_Store

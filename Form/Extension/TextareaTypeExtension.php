@@ -1,8 +1,9 @@
 <?php
+
 namespace Fsv\TypographyBundle\Form\Extension;
 
 use Fsv\TypographyBundle\Form\EventListener\TypographyListener;
-use Fsv\TypographyBundle\Typograph\TypographMapInterface;
+use Fsv\TypographyBundle\Typographer\TypographerMapInterface;
 use Symfony\Component\Form\AbstractTypeExtension;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -11,17 +12,14 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class TextareaTypeExtension extends AbstractTypeExtension
 {
-    /**
-     * @var TypographMapInterface
-     */
-    private $typographMap;
+    private $typographerMap;
 
     /**
-     * @param TypographMapInterface $typographMap
+     * @param TypographerMapInterface $typographerMap
      */
-    public function __construct(TypographMapInterface $typographMap)
+    public function __construct(TypographerMapInterface $typographerMap)
     {
-        $this->typographMap = $typographMap;
+        $this->typographerMap = $typographerMap;
     }
 
     /**
@@ -43,7 +41,7 @@ class TextareaTypeExtension extends AbstractTypeExtension
         if (false !== $options['typography']) {
             $builder->addEventSubscriber(
                 new TypographyListener(
-                    $this->typographMap->getTypograph(
+                    $this->typographerMap->getTypographer(
                         true === $options['typography'] ? 'default' : $options['typography']
                     )
                 )

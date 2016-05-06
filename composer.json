@@ -1,6 +1,6 @@
 {
     "name": "fsv/typography-bundle",
-    "description": "Symfony2 typograph for Russian Language",
+    "description": "Symfony typographer",
     "keywords": [
         "symfony2",
         "typograph",
@@ -19,13 +19,19 @@
     },
     "require-dev": {
         "phpunit/phpunit": "~4.8",
-        "emuravjev/mdash": "3.5"
+        "emuravjev/mdash": "3.5",
+        "michelf/php-smartypants": "^1.6@beta",
+        "squizlabs/php_codesniffer": "^2.6"
     },
     "autoload": {
         "psr-4": {
             "Fsv\\TypographyBundle\\": ""
         },
-        "classmap": ["./vendor/emuravjev/mdash/EMT.php"]
+        "classmap": [
+            "./vendor/emuravjev/mdash/EMT.php",
+            "./vendor/michelf/php-smartypants/Michelf/SmartyPants.php",
+            "./vendor/michelf/php-smartypants/Michelf/SmartyPantsTypographer.php"
+        ]
     },
     "minimum-stability": "dev",
     "prefer-stable": true,

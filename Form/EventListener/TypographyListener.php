@@ -2,26 +2,27 @@
 
 namespace Fsv\TypographyBundle\Form\EventListener;
 
-use Fsv\TypographyBundle\Typograph\TypographInterface;
+use Fsv\TypographyBundle\Typographer\TypographerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 
 class TypographyListener implements EventSubscriberInterface
 {
-    /**
-     * @var TypographInterface
-     */
-    private $typograph;
+    private $typographer;
 
     /**
-     * @param TypographInterface $typograph
+     * TypographyListener constructor.
+     * @param TypographerInterface $typographer
      */
-    public function __construct(TypographInterface $typograph)
+    public function __construct(TypographerInterface $typographer)
     {
-        $this->typograph = $typograph;
+        $this->typographer = $typographer;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public static function getSubscribedEvents()
     {
         return [
@@ -29,14 +30,17 @@ class TypographyListener implements EventSubscriberInterface
         ];
     }
 
+    /**
+     * @param FormEvent $event
+     */
     public function onSubmit(FormEvent $event)
     {
         $data = $event->getData();
 
-        if  (!is_string($data)) {
+        if (!is_string($data)) {
             return;
         }
 
-        $event->setData($this->typograph->apply($data));
+        $event->setData($this->typographer->typography($data));
     }
 }

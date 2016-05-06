@@ -1,4 +1,5 @@
 <?php
+
 namespace Fsv\TypographyBundle\Tests\Form\Extension;
 
 use Fsv\TypographyBundle\Form\Extension\TextareaTypeExtension;
@@ -49,7 +50,7 @@ class TextareaTypeExtensionTest extends TypeTestCase
         $this->assertEquals('Типограф - это здорово!', $form->getData());
     }
 
-    public function testSubmitWithDefaultTypograph()
+    public function testSubmitWithDefaultTypographer()
     {
         $form = $this->factory->create(self::$textareaType, null, array(
             'typography' => true
@@ -61,21 +62,21 @@ class TextareaTypeExtensionTest extends TypeTestCase
 
     protected function getExtensions()
     {
-        $typograph = $this->getMock('Fsv\TypographyBundle\Typograph\TypographInterface');
-        $typograph
+        $typographer = $this->getMock('Fsv\TypographyBundle\Typographer\TypographerInterface');
+        $typographer
             ->expects($this->any())
-            ->method('apply')
+            ->method('typography')
             ->with('Типограф - это здорово!')
             ->will($this->returnValue('Типограф&nbsp;&mdash; это здорово!'))
         ;
 
-        $typographMap = $this->getMock('Fsv\TypographyBundle\Typograph\TypographMapInterface');
-        $typographMap
+        $typographerMap = $this->getMock('Fsv\TypographyBundle\Typographer\TypographerMapInterface');
+        $typographerMap
             ->expects($this->any())
-            ->method('getTypograph')
+            ->method('getTypographer')
             ->with('default')
-            ->will($this->returnCallback(function () use ($typograph) {
-                return $typograph;
+            ->will($this->returnCallback(function () use ($typographer) {
+                return $typographer;
             }))
         ;
 
@@ -83,7 +84,7 @@ class TextareaTypeExtensionTest extends TypeTestCase
             new PreloadedExtension(
                 array(),
                 array(
-                    self::$textareaType => array(new TextareaTypeExtension($typographMap))
+                    self::$textareaType => array(new TextareaTypeExtension($typographerMap))
                 )
             )
         );

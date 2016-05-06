@@ -1,16 +1,29 @@
 parameters:
-    fsv_typography.typograph_map.class: Fsv\TypographyBundle\Typograph\TypographMap
-    fsv_typography.typograph.class: Fsv\TypographyBundle\Typograph\MdashTypograph
+    fsv_typography.typographer.mdash.class: Fsv\TypographyBundle\Typographer\MdashTypographer
+    fsv_typography.typographer.smartypants.class: Fsv\TypographyBundle\Typographer\SmartypantsTypographer
+    fsv_typography.typographer_map.class: Fsv\TypographyBundle\Typographer\TypographerMap
     fsv_typography.textarea_type_extension.class: Fsv\TypographyBundle\Form\Extension\TextareaTypeExtension
 
 services:
-    fsv_typography.typograph_map:
-        class: "%fsv_typography.typograph_map.class%"
+    fsv_typography.typographer.mdash:
+        class: "%fsv_typography.typographer.mdash.class%"
+        arguments:
+            - { type: collection }
+        abstract: true
+
+    fsv_typography.typographer.smartypants:
+        class: "%fsv_typography.typographer.smartypants.class%"
+        arguments:
+            - { type: collection }
+        abstract: true
+
+    fsv_typography.typographer_map:
+        class: "%fsv_typography.typographer_map.class%"
         arguments:
             - { type: collection }
 
     fsv_typography.textarea_type_extension:
         class: "%fsv_typography.textarea_type_extension.class%"
-        arguments: ["@fsv_typography.typograph_map"]
+        arguments: ["@fsv_typography.typographer_map"]
         tags:
             - { name: form.type_extension, extended_type: Symfony\Component\Form\Extension\Core\Type\TextareaType, alias: textarea }

@@ -13,10 +13,10 @@ class TypographyListenerTest extends TypeTestCase
         $input = 'Типограф - это здорово!';
         $output = 'Типограф&nbsp;&mdash; это здорово!';
 
-        $typograph = $this->getMock('Fsv\TypographyBundle\Typograph\TypographInterface');
-        $typograph
+        $typographer = $this->getMock('Fsv\TypographyBundle\Typographer\TypographerInterface');
+        $typographer
             ->expects($this->once())
-            ->method('apply')
+            ->method('typography')
             ->with($input)
             ->will($this->returnValue($output))
         ;
@@ -24,7 +24,7 @@ class TypographyListenerTest extends TypeTestCase
         $form = $this->getMock('Symfony\Component\Form\Test\FormInterface');
         $event = new FormEvent($form, $input);
 
-        $listener = new TypographyListener($typograph);
+        $listener = new TypographyListener($typographer);
         $listener->onSubmit($event);
 
         $this->assertEquals($output, $event->getData());
